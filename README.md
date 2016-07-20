@@ -1,12 +1,26 @@
 # Dynamic DynamoDB
 [![Version][npm-image]][npm-url] ![Downloads][downloads-image] [![Build Status][wercker-image]][wercker-url] [![Open Issues][issues-image]][issues-url] [![Dependency Status][daviddm-image]][daviddm-url] ![License][license-image]
 
-> Create Screwdriver datastore tables in DynamoDB
+> A utility CLI for creating Screwdriver datastore tables in DynamoDB
 
 ## Usage
 
+### Installation
+
 ```bash
-npm install screwdriver-dynamic-dynamodb
+$ npm install -g screwdriver-dynamic-dynamodb
+```
+
+### API
+
+***Pipelines***
+
+```bash
+# Creates a pipelines DynamoDB table
+$ tables pipelines
+
+# Creates a pipelines DynamoDB table in Ireland
+$ tables pipelines --region eu-west-1
 ```
 
 ## Testing
