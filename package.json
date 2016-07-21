@@ -1,12 +1,14 @@
 {
   "name": "screwdriver-dynamic-dynamodb",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Create Screwdriver datastore tables in DynamoDB",
   "main": "index.js",
   "scripts": {
     "pretest": "eslint .",
-    "tables": "./bin/tables.js",
     "test": "jenkins-mocha --recursive"
+  },
+  "bin": {
+    "screwdriver-db-setup": "./bin/tables.js"
   },
   "repository": {
     "type": "git",
@@ -43,6 +45,7 @@
   "dependencies": {
     "commander": "^2.9.0",
     "screwdriver-data-schema": "^4.0.0",
-    "vogels": "^2.2.0"
+    "vogels": "^2.2.0",
+    "winston": "^2.2.0"
   }
 }
