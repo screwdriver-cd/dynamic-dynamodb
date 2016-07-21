@@ -13,14 +13,12 @@ $ npm install -g screwdriver-dynamic-dynamodb
 
 ### API
 
-***Pipelines***
-
 ```bash
-# Creates a pipelines DynamoDB table
-$ tables pipelines
+# Creates all DynamoDB tables
+$ screwdriver-db-setup
 
-# Creates a pipelines DynamoDB table in Ireland
-$ tables pipelines --region eu-west-1
+# Creates all DynamoDB tables in Ireland
+$ screwdriver-db-setup --region eu-west-1
 ```
 
 ## Testing

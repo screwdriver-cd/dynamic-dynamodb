@@ -91,13 +91,96 @@ describe('Bobby', () => {
             client = new Bobby();
         });
 
-        it('defines model with correct default values', () => {
+        it('defines model with correct values', () => {
+            dataSchemaMock.build = {
+                base: {
+                    bar: 'joi.bar()'
+                },
+                tableName: 'builds',
+                indexes: ['bar']
+            };
+            dataSchemaMock.job = {
+                base: {
+                    baz: 'joi.bar()'
+                },
+                tableName: 'jobs',
+                indexes: ['baz']
+            };
+            dataSchemaMock.platform = {
+                base: {
+                    bin: 'joi.bar()'
+                },
+                tableName: 'platforms',
+                indexes: ['bin']
+            };
+            dataSchemaMock.user = {
+                base: {
+                    min: 'joi.bar()'
+                },
+                tableName: 'users',
+                indexes: ['min']
+            };
             dataSchemaMock.pipeline = {
                 base: {
                     foo: 'joi.bar()'
-                }
+                },
+                tableName: 'pipelines',
+                indexes: ['foo']
             };
-            client.setupPipelinesTable();
+            client.setupTables();
+
+            assert.calledWith(vogelsMock.define, 'build', {
+                hashKey: 'id',
+                schema: {
+                    bar: 'joi.bar()'
+                },
+                tableName: 'builds',
+                indexes: [{
+                    hashKey: 'bar',
+                    name: 'barIndex',
+                    type: 'global',
+                    projection: { ProjectionType: 'KEYS_ONLY' }
+                }]
+            });
+            assert.calledWith(vogelsMock.define, 'job', {
+                hashKey: 'id',
+                schema: {
+                    baz: 'joi.bar()'
+                },
+                tableName: 'jobs',
+                indexes: [{
+                    hashKey: 'baz',
+                    name: 'bazIndex',
+                    type: 'global',
+                    projection: { ProjectionType: 'KEYS_ONLY' }
+                }]
+            });
+            assert.calledWith(vogelsMock.define, 'platform', {
+                hashKey: 'id',
+                schema: {
+                    bin: 'joi.bar()'
+                },
+                tableName: 'platforms',
+                indexes: [{
+                    hashKey: 'bin',
+                    name: 'binIndex',
+                    type: 'global',
+                    projection: { ProjectionType: 'KEYS_ONLY' }
+                }]
+            });
+            assert.calledWith(vogelsMock.define, 'user', {
+                hashKey: 'id',
+                schema: {
+                    min: 'joi.bar()'
+                },
+                tableName: 'users',
+                indexes: [{
+                    hashKey: 'min',
+                    name: 'minIndex',
+                    type: 'global',
+                    projection: { ProjectionType: 'KEYS_ONLY' }
+                }]
+            });
             assert.calledWith(vogelsMock.define, 'pipeline', {
                 hashKey: 'id',
                 schema: {
@@ -105,33 +188,21 @@ describe('Bobby', () => {
                 },
                 tableName: 'pipelines',
                 indexes: [{
-                    hashKey: 'scmUrl',
-                    name: 'ScmUrlIndex',
+                    hashKey: 'foo',
+                    name: 'fooIndex',
                     type: 'global',
                     projection: { ProjectionType: 'KEYS_ONLY' }
                 }]
             });
-        });
-
-        it('defines model with values from data schema', () => {
-            dataSchemaMock.pipeline = {
-                base: {
-                    foo: 'joi.bar()'
-                },
-                hashKey: 'hashKey',
-                tableName: 'pipelineTable'
-            };
-            client.setupPipelinesTable();
             assert.calledWith(vogelsMock.define, 'pipeline', {
-                hashKey: 'hashKey',
+                hashKey: 'id',
                 schema: {
                     foo: 'joi.bar()'
                 },
-
-                tableName: 'pipelineTable',
+                tableName: 'pipelines',
                 indexes: [{
-                    hashKey: 'scmUrl',
-                    name: 'ScmUrlIndex',
+                    hashKey: 'foo',
+                    name: 'fooIndex',
                     type: 'global',
                     projection: { ProjectionType: 'KEYS_ONLY' }
                 }]
