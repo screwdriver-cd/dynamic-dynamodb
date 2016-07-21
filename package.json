@@ -41,7 +41,8 @@
     "sinon": "^1.17.4"
   },
   "dependencies": {
-    "aws-sdk": "^2.4.8",
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "screwdriver-data-schema": "^4.0.0",
+    "vogels": "^2.2.0"
   }
 }

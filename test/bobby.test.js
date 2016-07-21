@@ -6,10 +6,9 @@ const sinon = require('sinon');
 sinon.assert.expose(assert, { prefix: '' });
 
 describe('Bobby', () => {
-    let dynamoMock;
-    let dynamoConstructor;
+    let vogelsMock;
+    let dataSchemaMock;
     let Bobby;
-    let pipelineConfigMock;
 
     before(() => {
         mockery.enable({
@@ -19,17 +18,18 @@ describe('Bobby', () => {
     });
 
     beforeEach(() => {
-        dynamoMock = {
-            createTable: sinon.stub()
+        dataSchemaMock = {};
+        vogelsMock = {
+            AWS: {
+                config: {
+                    update: sinon.stub()
+                }
+            },
+            define: sinon.stub(),
+            createTables: sinon.stub()
         };
-        dynamoConstructor = sinon.stub();
-        dynamoConstructor.prototype = dynamoMock;
-        mockery.registerMock('aws-sdk', {
-            DynamoDB: dynamoConstructor
-        });
-
-        pipelineConfigMock = { config: 'pipeline' };
-        mockery.registerMock('../config/pipeline', pipelineConfigMock);
+        mockery.registerMock('vogels', vogelsMock);
+        mockery.registerMock('screwdriver-data-schema', dataSchemaMock);
 
         Bobby = require('../lib/bobby.js'); // eslint-disable-line global-require
     });
@@ -43,12 +43,44 @@ describe('Bobby', () => {
         mockery.disable();
     });
 
-    it('loaded the sdk correctly', () => {
-        const client = new Bobby();
+    describe('constructor', () => {
+        it('configures AWS correctly with default region', () => {
+            const client = new Bobby();
 
-        assert.isOk(client);
-        assert.calledWith(dynamoConstructor, {
-            region: 'us-west-2'
+            assert.isOk(client);
+            assert.calledWith(vogelsMock.AWS.config.update, {
+                region: 'us-west-2'
+            });
+        });
+
+        it('configures AWS correctly with passed in region', () => {
+            const client = new Bobby({
+                region: 'us-west-1'
+            });
+
+            assert.isOk(client);
+            assert.calledWith(vogelsMock.AWS.config.update, {
+                region: 'us-west-1'
+            });
+        });
+    });
+
+    describe('createTables', () => {
+        let client;
+
+        beforeEach(() => {
+            client = new Bobby();
+        });
+
+        it('calls vogel createTables passing callback', (done) => {
+            vogelsMock.createTables.yieldsAsync(null);
+            const cb = () => {
+                assert.calledOnce(vogelsMock.createTables);
+                assert.calledWith(vogelsMock.createTables, cb);
+                done();
+            };
+
+            client.createTables(cb);
         });
     });
 
@@ -56,25 +88,53 @@ describe('Bobby', () => {
         let client;
 
         beforeEach(() => {
-            dynamoMock.createTable.yieldsAsync();
-
             client = new Bobby();
         });
 
-        it('can create a pipeline table', (done) => {
-            client.createPipelinesTable(() => {
-                assert.calledWith(dynamoMock.createTable, pipelineConfigMock);
-                done();
+        it('defines model with correct default values', () => {
+            dataSchemaMock.pipeline = {
+                base: {
+                    foo: 'joi.bar()'
+                }
+            };
+            client.setupPipelinesTable();
+            assert.calledWith(vogelsMock.define, 'pipeline', {
+                hashKey: 'id',
+                schema: {
+                    foo: 'joi.bar()'
+                },
+                tableName: 'pipelines',
+                indexes: [{
+                    hashKey: 'scmUrl',
+                    name: 'ScmUrlIndex',
+                    type: 'global',
+                    projection: { ProjectionType: 'KEYS_ONLY' }
+                }]
             });
         });
 
-        it('passes back the error encountered', (done) => {
-            const expectedErr = new Error('testError');
+        it('defines model with values from data schema', () => {
+            dataSchemaMock.pipeline = {
+                base: {
+                    foo: 'joi.bar()'
+                },
+                hashKey: 'hashKey',
+                tableName: 'pipelineTable'
+            };
+            client.setupPipelinesTable();
+            assert.calledWith(vogelsMock.define, 'pipeline', {
+                hashKey: 'hashKey',
+                schema: {
+                    foo: 'joi.bar()'
+                },
 
-            dynamoMock.createTable.yieldsAsync(expectedErr);
-            client.createPipelinesTable((err) => {
-                assert.strictEqual(expectedErr.message, err.message);
-                done();
+                tableName: 'pipelineTable',
+                indexes: [{
+                    hashKey: 'scmUrl',
+                    name: 'ScmUrlIndex',
+                    type: 'global',
+                    projection: { ProjectionType: 'KEYS_ONLY' }
+                }]
             });
         });
     });
