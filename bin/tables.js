@@ -18,7 +18,8 @@ commander
         };
         const client = new Bobby(options);
 
-        client.createPipelinesTable((err) => {
+        client.setupPipelinesTable();
+        client.createTables((err) => {
             console.error(err);
         });
     });
