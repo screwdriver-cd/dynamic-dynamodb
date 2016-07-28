@@ -11,8 +11,8 @@ class Bobby {
      */
     constructor(options) {
         this.options = options || {};
-        this.region = this.options.region || 'us-west-2';
-        vogels.AWS.config.update({ region: this.region });
+        this.options.region = this.options.region || 'us-west-2';
+        vogels.AWS.config.update(this.options);
     }
 
     /**

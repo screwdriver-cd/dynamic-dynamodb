@@ -71,6 +71,18 @@ describe('Bobby', () => {
                 region: 'us-west-1'
             });
         });
+
+        it('configures AWS correctly with passed in secrets', () => {
+            const client = new Bobby({
+                awsSecretId: 'SECRET'
+            });
+
+            assert.isOk(client);
+            assert.calledWith(vogelsMock.AWS.config.update, {
+                region: 'us-west-2',
+                awsSecretId: 'SECRET'
+            });
+        });
     });
 
     describe('defineTable', () => {
