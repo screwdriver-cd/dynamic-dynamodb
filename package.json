@@ -1,6 +1,6 @@
 {
   "name": "screwdriver-dynamic-dynamodb",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Create Screwdriver datastore tables in DynamoDB",
   "main": "index.js",
   "scripts": {
@@ -43,8 +43,9 @@
     "sinon": "^1.17.4"
   },
   "dependencies": {
+    "async": "^2.0.1",
     "commander": "^2.9.0",
-    "screwdriver-data-schema": "^4.0.0",
+    "screwdriver-data-schema": "^7.0.0",
     "vogels": "^2.2.0",
     "winston": "^2.2.0"
   }
