@@ -14,11 +14,17 @@ $ npm install -g screwdriver-dynamic-dynamodb
 ### API
 
 ```bash
-# Creates all DynamoDB tables
-$ screwdriver-db-setup
+# Creates all DynamoDB tables ("builds", "jobs", "pipelines", "users")
+$ screwdriver-db-setup create
 
 # Creates all DynamoDB tables in Ireland
-$ screwdriver-db-setup --region eu-west-1
+$ screwdriver-db-setup --region eu-west-1 create
+
+# Creates "builds" table in Ireland
+$ screwdriver-db-setup --region eu-west-1 create build
+
+# Drops all DynamoDB tables
+$ screwdriver-db-setup drop
 ```
 
 ## Testing
