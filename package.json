@@ -43,7 +43,7 @@
   "dependencies": {
     "async": "^2.0.1",
     "commander": "^2.9.0",
-    "screwdriver-data-schema": "^10.0.4",
+    "screwdriver-data-schema": "^11.0.0",
     "vogels": "^2.2.0",
     "winston": "^2.2.0"
   }
