@@ -6,7 +6,8 @@ const commander = require('commander');
 const pkg = require('../package.json');
 const winston = require('winston');
 const async = require('async');
-const defaultTables = ['build', 'job', 'pipeline', 'user'];
+const schemas = require('screwdriver-data-schema');
+const defaultTables = Object.keys(schemas.models);
 const defaultRegion = 'us-west-2';
 
 winston
