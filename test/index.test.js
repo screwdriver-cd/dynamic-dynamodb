@@ -22,7 +22,13 @@ describe('Bobby', () => {
             models: {
                 build: {
                     base: 'baseSchema',
-                    tableName: 'tableName',
+                    tableName: 'buildTableName',
+                    indexes: ['first', 'second'],
+                    rangeKey: 'second'
+                },
+                job: {
+                    base: 'baseSchema',
+                    tableName: 'jobTableName',
                     indexes: ['foo', 'bar']
                 }
             }
@@ -95,12 +101,12 @@ describe('Bobby', () => {
         it('calls vogel define with object', () => {
             vogelsMock.define.returns('vogelObj');
 
-            client.defineTable('build');
+            client.defineTable('job');
             assert.calledOnce(vogelsMock.define);
-            assert.calledWith(vogelsMock.define, 'build', {
+            assert.calledWith(vogelsMock.define, 'job', {
                 hashKey: 'id',
                 schema: 'baseSchema',
-                tableName: 'tableName',
+                tableName: 'jobTableName',
                 indexes: [
                     {
                         hashKey: 'foo',
@@ -110,6 +116,29 @@ describe('Bobby', () => {
                     {
                         hashKey: 'bar',
                         name: 'barIndex',
+                        type: 'global'
+                    }
+                ]
+            });
+        });
+
+        it('defines an object with a range key', () => {
+            client.defineTable('build');
+
+            assert.calledWith(vogelsMock.define, 'build', {
+                hashKey: 'id',
+                rangeKey: 'second',
+                schema: 'baseSchema',
+                tableName: 'buildTableName',
+                indexes: [
+                    {
+                        hashKey: 'first',
+                        name: 'firstIndex',
+                        type: 'global'
+                    },
+                    {
+                        hashKey: 'second',
+                        name: 'secondIndex',
                         type: 'global'
                     }
                 ]
