@@ -38,6 +38,10 @@ class Bobby {
             indexes
         };
 
+        if (schema.rangeKey) {
+            vogelsObject.rangeKey = schema.rangeKey;
+        }
+
         return vogels.define(modelName, vogelsObject);
     }
 }
