@@ -38,8 +38,12 @@ class Bobby {
             indexes
         };
 
-        if (schema.rangeKey) {
-            vogelsObject.rangeKey = schema.rangeKey;
+        if (Array.isArray(schema.rangeKeys)) {
+            schema.rangeKeys.forEach((rangeKey, indexNumber) => {
+                if (rangeKey) {
+                    indexes[indexNumber].rangeKey = rangeKey;
+                }
+            });
         }
 
         return vogels.define(modelName, vogelsObject);

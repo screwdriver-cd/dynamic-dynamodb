@@ -24,12 +24,18 @@ describe('Bobby', () => {
                     base: 'baseSchema',
                     tableName: 'buildTableName',
                     indexes: ['first', 'second'],
-                    rangeKey: 'second'
+                    rangeKeys: [null, 'otherColumn']
                 },
                 job: {
                     base: 'baseSchema',
                     tableName: 'jobTableName',
                     indexes: ['foo', 'bar']
+                },
+                pipeline: {
+                    base: 'baseSchema',
+                    tableName: 'pipelineTableName',
+                    rangeKeys: 'invalidRangeKeyValue',
+                    indexes: ['gummyBear']
                 }
             }
         };
@@ -127,7 +133,6 @@ describe('Bobby', () => {
 
             assert.calledWith(vogelsMock.define, 'build', {
                 hashKey: 'id',
-                rangeKey: 'second',
                 schema: 'baseSchema',
                 tableName: 'buildTableName',
                 indexes: [
@@ -138,7 +143,25 @@ describe('Bobby', () => {
                     },
                     {
                         hashKey: 'second',
+                        rangeKey: 'otherColumn',
                         name: 'secondIndex',
+                        type: 'global'
+                    }
+                ]
+            });
+        });
+
+        it('ignores incorrect definitions of range keys', () => {
+            client.defineTable('pipeline');
+
+            assert.calledWith(vogelsMock.define, 'pipeline', {
+                hashKey: 'id',
+                schema: 'baseSchema',
+                tableName: 'pipelineTableName',
+                indexes: [
+                    {
+                        hashKey: 'gummyBear',
+                        name: 'gummyBearIndex',
                         type: 'global'
                     }
                 ]
