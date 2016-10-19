@@ -1,4 +1,5 @@
 'use strict';
+
 const vogels = require('vogels');
 const dataSchema = require('screwdriver-data-schema');
 
@@ -25,7 +26,7 @@ class Bobby {
     defineTable(modelName, prefix) {
         const schema = dataSchema.models[modelName];
         const tableName = `${prefix || ''}${schema.tableName}`;
-        const indexes = schema.indexes.map((key) => ({
+        const indexes = schema.indexes.map(key => ({
             hashKey: key,
             name: `${key}Index`,
             type: 'global'
