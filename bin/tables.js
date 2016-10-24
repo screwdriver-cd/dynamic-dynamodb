@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 'use strict';
 
 const Bobby = require('../');
@@ -31,14 +32,14 @@ function generateModelList(selectedTables) {
     if (selectedTables.length === 0) {
         tables = defaultTables;
     } else {
-        tables = defaultTables.filter((tableName) => selectedTables.indexOf(tableName) > -1);
+        tables = defaultTables.filter(tableName => selectedTables.indexOf(tableName) > -1);
     }
 
     winston.info(`Tables: ${tables}`);
     winston.info(`Prefix: ${prefix}`);
     winston.info(`Region: ${region}`);
 
-    return tables.map((tableName) => client.defineTable(tableName, prefix));
+    return tables.map(tableName => client.defineTable(tableName, prefix));
 }
 
 commander.version(pkg.version);
