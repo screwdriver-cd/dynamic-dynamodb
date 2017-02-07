@@ -35,15 +35,15 @@
     "chai": "^3.5.0",
     "eslint": "^3.2.2",
     "eslint-config-screwdriver": "^2.0.0",
-    "eslint-plugin-import": "^1.12.0",
-    "jenkins-mocha": "^2.6.0",
-    "mockery": "^1.7.0",
+    "eslint-plugin-import": "^2.2.0",
+    "jenkins-mocha": "^4.1.1",
+    "mockery": "^2.0.0",
     "sinon": "^1.17.4"
   },
   "dependencies": {
     "async": "^2.0.1",
     "commander": "^2.9.0",
-    "screwdriver-data-schema": "^13.0.0",
+    "screwdriver-data-schema": "^16.0.5",
     "vogels": "^2.2.0",
     "winston": "^2.2.0"
   }
